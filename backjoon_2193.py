@@ -7,6 +7,12 @@ def pinary(n):
     print(p[n])
 
 
+def pinary_self(n):
+    a = p(n-1)
+    b = p(n-2)
+    return a + b
+
+
 n = int(input())
 pinary(n)
 
