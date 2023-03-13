@@ -7,12 +7,14 @@ def pinary(n):
     print(p[n])
 
 
+# 재귀함수로 구현
 def pinary_self(n):
-    a = p(n-1)
-    b = p(n-2)
+
+    a = pinary_self(n-1)
+    b = pinary_self(n-2)
     return a + b
 
 
 n = int(input())
-pinary(n)
+pinary_self(n)
 

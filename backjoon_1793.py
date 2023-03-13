@@ -13,20 +13,32 @@ def tiling(n):
     return a[n]
 
 
+dp = [0 for i in range(251)]
+dp[0], dp[1] = 1, 1
+
+
 # 재귀함수로
 def tiling_dp(n):
+    w_1 = 0
+    w_2 = 0
     if n <= 1:
-        return 1
+        return dp[n]
     if n <= 250:
-        # _1 = tiling_dp(n-1) + 2 * tiling_dp(n-2)
-        w_1 = tiling_dp(n-1)
-        w_2 = tiling_dp(n-2)
-        return w_1 + 2 * w_2
+        if dp[n-1] == 0:
+            w_1 = tiling_dp(n-1)
+        else:
+            w_1 = dp[n-1]
+        if dp[n-2] == 0:
+            w_2 = tiling_dp(n-2)
+        else:
+            w_2 = dp[n-2]
+        dp[n] = w_1 + 2 * w_2
+        return dp[n]
 
 
 while True:
-    n = int(input())
     try:
+        n = int(input())
         print(tiling_dp(n))
     except:
         break
