@@ -1,57 +1,61 @@
-def printarr(arr):
+# input settings
+n = int(input())
+target = int(input())
+
+# init values
+snail_matrix = [[0] * n for _ in range(n)]
+value = n * n
+row, column = 1, 1  # 유의: 행렬이므로 row = 가로축, column = 세로축
+target_row, target_column = 0, 0
+
+
+def move_like_a_snail(n, row, column):
+    global value, target_row, target_column
+    move_down = n-1
+    move_right = n-1
+    move_up = n-1
+    move_left = n-1
+
+    if n == 1:
+        snail_matrix[column-1][row-1] = value
+        return
+    if n > 1:
+        # 규칙: 하->우->상->좌 로 n-1씩 움직임
+        # 하: column 그대로, row 1씩 증가 (1, 0)
+        # 우: row 그대로, column 1씩 증가 (0, 1)
+        # 상: column 그대로, row 1씩 감소 (-1, 0)
+        # 좌: row 그대로, column 1씩 감소 (0, -1)
+        while move_left > 0:
+            snail_matrix[column-1][row-1] = value
+            if value == target:
+                target_row = row
+                target_column = column
+            value -= 1
+            if move_down > 0:
+                column += 1
+                move_down -= 1
+            elif move_right > 0:
+                row += 1
+                move_right -= 1
+            elif move_up > 0:
+                column -= 1
+                move_up -= 1
+            elif move_left > 0:
+                row -= 1
+                move_left -= 1
+        move_like_a_snail(n - 2, row + 1, column + 1)
+
+
+def print_arr(arr):
     for i in range(len(arr)):
         for j in range(len(arr)):
             print(arr[i][j], end=" ")
         print()
 
 
-n = int(input())
-m = int(input())
+# 재귀호출로 바꾸기
+if n > 0:
+    move_like_a_snail(n, row, column)
 
-num = n * n
-snail = [[0 for _ in range(n)] for _ in range(n)]
-
-# 좌표 초기화
-# 유의할 점: 행렬이므로 x가 세로축, y가 가로축
-x, y = 1, 1
-answer_x, answer_y = 0, 0
-
-
-def snail_(n):
-    global x, y, num, answer_x, answer_y
-    # 움직일 횟수 초기화
-    go_down = n-1
-    go_right = n-1
-    go_up = n-1
-    go_left = n-1
-
-    while go_left > 0:
-        snail[y-1][x-1] = num
-        if num == m:
-            answer_x = x
-            answer_y = y
-        num = num - 1
-        if go_down > 0:
-            y += 1
-            go_down -= 1
-        elif go_right > 0:
-            x += 1
-            go_right -= 1
-        elif go_up > 0:
-            y -= 1
-            go_up -= 1
-        elif go_left > 0:
-            x -= 1
-            go_left -= 1
-    x += 1
-    y += 1
-
-
-while n > 0:
-    snail_(n)
-    n -= 2
-
-snail[y-2][x-2] = 1
-
-printarr(snail)
-print(answer_y, answer_x)  # 행렬 좌표를 표시해야하므로
+print_arr(snail_matrix)
+print(target_column, target_row)
